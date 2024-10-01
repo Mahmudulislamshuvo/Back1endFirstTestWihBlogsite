@@ -1,4 +1,18 @@
 import React, { useEffect, useState } from "react";
+import ReactDOM from "react-dom";
+import Modal from "react-modal";
+
+const customStyles = {
+  content: {
+    top: "50%",
+    left: "50%",
+    right: "auto",
+    bottom: "auto",
+    marginRight: "-50%",
+    transform: "translate(-50%, -50%)",
+    width: "40%",
+  },
+};
 
 const BlogLeft = () => {
   const [blogs, setBlogs] = useState({
@@ -7,6 +21,15 @@ const BlogLeft = () => {
     author: "",
   });
   const [bloginfo, setbloginfo] = useState([]);
+  const [modalIsOpen, setIsOpen] = useState(false);
+
+  function openModal() {
+    setIsOpen(true);
+  }
+
+  function closeModal() {
+    setIsOpen(false);
+  }
 
   const handleSubmit = () => {
     if (!blogs.tittle || !blogs.descriptions || !blogs.author) {
@@ -87,6 +110,13 @@ const BlogLeft = () => {
     }, 1000);
   });
 
+  /**
+   * todo: Handle Edit Btn
+   * */
+  const HandleEditButton = () => {
+    openModal();
+  };
+
   return (
     <div className="flex h-screen">
       <div className="w-1/2 bg-[#c72d2d] flex items-center justify-center">
@@ -151,7 +181,10 @@ const BlogLeft = () => {
                 </p>
               </div>
               <div className="mt-5">
-                <button className="px-5 py-2 bg-green-400 rounded-xl">
+                <button
+                  className="px-5 py-2 bg-green-400 rounded-xl"
+                  onClick={HandleEditButton}
+                >
                   Edit
                 </button>
                 <button className="px-5 py-2 bg-red-400 ml-5 rounded-xl">
@@ -164,6 +197,56 @@ const BlogLeft = () => {
           <p className="text-gray-500 text-center">No blogs submitted yet.</p>
         )}
       </div>
+      {/* Modal start */}
+      <div>
+        <Modal
+          isOpen={modalIsOpen}
+          onRequestClose={closeModal}
+          style={customStyles}
+          contentLabel="Example Modal"
+        >
+          <button
+            onClick={closeModal}
+            className="px-2 py-1 bg-red-600 rounded-md text-white font-semibold mb-10"
+          >
+            close
+          </button>
+          <form
+            onClick={(e) => {
+              e.preventDefault();
+            }}
+          >
+            <label htmlFor="updattittle">Tittle</label>
+            <input
+              placeholder="tittle"
+              id="updattittle"
+              name="updattittle"
+              className="block w-full px-4 py-2 mt-2 border-[2px] border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
+            />
+            <label htmlFor="updatedescriptions">description</label>
+            <input
+              placeholder="description"
+              id="updatedescriptions"
+              name="updatedescriptions"
+              className="block w-full px-4 py-2 mt-2 border-[2px] border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
+            />
+            <label htmlFor="updatAuthor">Author</label>
+            <input
+              placeholder="Author"
+              id="updatAuthor"
+              name="updatAuthor"
+              className="block w-full px-4 py-2 mt-2 border-[2px] border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
+            />
+            <button
+              className="px-[50px] py-3 bg-indigo-600 mt-5 rounded-xl text-white font-medium block mx-auto
+            "
+            >
+              Update
+            </button>
+          </form>
+        </Modal>
+      </div>
+      {/* Modal start */}
     </div>
   );
 };
