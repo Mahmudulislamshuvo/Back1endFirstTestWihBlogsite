@@ -13,7 +13,11 @@ const BlogLeft = () => {
       alert("Data missing");
     } else {
       setbloginfo([...bloginfo, blogs]);
-      setBlogs("");
+      setBlogs({
+        tittle: "",
+        descriptions: "",
+        author: "",
+      });
     }
   };
 
@@ -44,6 +48,45 @@ const BlogLeft = () => {
     }
   }, [bloginfo]);
 
+  /**
+   * todo: color chnaging things from googgle don't know how it works
+   * */
+
+  const [colorIndex, setColorIndex] = useState(0);
+  const colors = [
+    "red",
+    "blue",
+    "green",
+    "yellow",
+    "purple",
+    "orange",
+    "pink",
+    "cyan",
+    "magenta",
+    "lime",
+    "brown",
+    "gray",
+    "navy",
+    "teal",
+    "violet",
+    "indigo",
+    "gold",
+    "silver",
+    "coral",
+    "salmon",
+    "khaki",
+    "peachpuff",
+    "lavender",
+    "tan",
+    "peru",
+    "lightblue",
+  ];
+  useEffect(() => {
+    const intervalId = setInterval(() => {
+      setColorIndex((prevIndex) => (prevIndex + 1) % colors.length);
+    }, 1000);
+  });
+
   return (
     <div className="flex h-screen">
       <div className="w-1/2 bg-[#c72d2d] flex items-center justify-center">
@@ -57,13 +100,15 @@ const BlogLeft = () => {
             className="w-full mb-6 p-4 border-b-2 border-gray-300 text-lg focus:outline-none focus:border-blue-500"
             onChange={Handleinput}
             id="tittle"
+            value={blogs.tittle}
           />
-          <textarea
+          <input
             placeholder="Description"
             className="w-full mb-6 p-4 border-b-2 border-gray-300 text-lg focus:outline-none focus:border-blue-500"
             rows="4"
             onChange={Handleinput}
             id="descriptions"
+            value={blogs.descriptions}
           />
           <input
             type="text"
@@ -71,6 +116,7 @@ const BlogLeft = () => {
             className="w-full mb-6 p-4 border-b-2 border-gray-300 text-lg focus:outline-none focus:border-blue-500"
             onChange={Handleinput}
             id="author"
+            value={blogs.author}
           />
           <button
             className="w-full bg-blue-500 text-white p-4 rounded-lg hover:bg-blue-600 transition duration-300 text-xl"
@@ -82,20 +128,36 @@ const BlogLeft = () => {
       </div>
 
       {/* Right Side */}
-      <div className="w-1/2 bg-[#f812c6] p-8 overflow-y-auto">
+      <div
+        className="w-1/2 p-8 overflow-y-auto"
+        style={{
+          backgroundColor: colors[colorIndex],
+          transition: "background-color 0.5s ease",
+        }}
+      >
         <h1 className="text-4xl font-bold mb-8 text-center text-[#333]">
           Blog Posts
         </h1>
         {bloginfo.length > 0 ? (
           bloginfo.map((items) => (
-            <div className="mb-8 p-6 bg-[#f0f0f0] rounded-lg shadow-lg">
-              <h2 className="text-2xl font-semibold text-[#333]">
-                {items.tittle}
-              </h2>
-              <p className="text-gray-700 mt-4">{items.descriptions}</p>
-              <p className="text-sm text-gray-500 mt-6">
-                Author: {items.author}
-              </p>
+            <div className="mb-8 p-6 bg-[#f0f0f0] rounded-lg shadow-[5px_5px_0px_0px_rgba(109,40,217)]">
+              <div>
+                <h2 className="text-2xl font-semibold text-[#333]">
+                  {items.tittle}
+                </h2>
+                <p className="text-gray-700 mt-4">{items.descriptions}</p>
+                <p className="text-sm text-gray-500 mt-6">
+                  Author: {items.author}
+                </p>
+              </div>
+              <div className="mt-5">
+                <button className="px-5 py-2 bg-green-400 rounded-xl">
+                  Edit
+                </button>
+                <button className="px-5 py-2 bg-red-400 ml-5 rounded-xl">
+                  Delete
+                </button>
+              </div>
             </div>
           ))
         ) : (
